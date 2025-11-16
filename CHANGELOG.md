@@ -1,5 +1,7 @@
 # Changelog Chainlink Core
 
+## 2.29.0 - PREVIEW
+
 ## 2.30.0 - PREVIEW
 
 ## added
@@ -2591,7 +2593,7 @@ The following `AUDIT_LOGGER_*` environment variables below configure this option
 
 An optional list of HTTP headers to be added for every optional audit log event. If the above `AUDIT_LOGGER_FORWARD_TO_URL` is set, audit log events will be POSTed to that URL, and will include headers specified in this environment variable. One example use case is auth for example: `AUDIT_LOGGER_HEADERS="Authorization||{{token}}"`.
 
-Header keys and values are delimited on ||, and multiple headers can be added with a forward slash delimiter ('\'). An example of multiple key value pairs:
+Header keys and values are delimited on ||, and multiple headers can be added with a forward slash delimiter (''). An example of multiple key value pairs:
 `AUDIT_LOGGER_HEADERS="Authorization||{{token}}Some-Other-Header||{{token2}}"`
 
 ##### AUDIT_LOGGER_JSON_WRAPPER_KEY
@@ -2804,7 +2806,7 @@ If minConfirmations > 0 and failOnRevert=true then the ethtx task will error on 
 
 If `minConfirmations` is not set on the task, the chain default will be used which is usually 12 and always greater than 0.
 
-- `http` task now allows specification of request headers. Use like so: `foo [type=http headers="[\"X-Header-1\", \"value1\", \"X-Header-2\", \"value2\"]"]`.
+- `http` task now allows specification of request headers. Use like so: `foo [type=http headers="["X-Header-1", "value1", "X-Header-2", "value2"]"]`.
 
 ### Fixed
 
@@ -3788,7 +3790,7 @@ Note that it has no effect on FMv1 jobs. Node operators will need to upgrade to 
 - Task definitions in v2 jobs (those with TOML specs) now support quoting strings with angle brackets (which DOT already permitted). This is particularly useful when defining JSON blobs to post to external adapters. For example:
 
   ```
-  my_bridge [type=bridge name="my_bridge" requestData="{\"hi\": \"hello\"}"]
+  my_bridge [type=bridge name="my_bridge" requestData="{"hi": "hello"}"]
   ```
 
   ... can now be written as:
