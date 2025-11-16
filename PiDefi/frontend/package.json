@@ -1,0 +1,92 @@
+{
+  "name": "pidefi-frontend",
+  "version": "1.0.0",
+  "description": "Hyper-tech frontend for PiDefi: 3D holographic DeFi dashboard with AI chat and Soroban integration.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "serve": "serve -s build -l 3000",
+    "deploy": "npm run build && firebase deploy"  // For hosting
+  },
+  "dependencies": {
+    "@react-three/fiber": "^8.13.0",  // 3D rendering for holographics
+    "@react-three/drei": "^9.80.0",   // Helpers for 3D scenes
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "three": "^0.155.0",  // Core 3D library for holographic viz
+    "@tensorflow/tfjs": "^4.10.0",  // AI for chat and recommendations
+    "@tensorflow-models/qna": "^1.0.1",  // AI Q&A for DeFi advice
+    "soroban-client": "^0.1.0",  // Soroban SDK for Stellar integration (placeholder; use official)
+    "web3": "^1.9.0",  // Web3 for multi-chain (Ethereum fallback)
+    "axios": "^1.4.0",  // API calls to PiDefi backend/oracles
+    "socket.io-client": "^4.7.0",  // Real-time updates
+    "react-router-dom": "^6.14.0",  // Routing for pages
+    "styled-components": "^6.0.0",  // Styling with hyper-tech themes
+    "framer-motion": "^10.12.0",  // Animations for holographic effects
+    "react-i18next": "^12.0.0",  // Multi-language support
+    "react-helmet": "^6.1.0",  // SEO and meta tags
+    "workbox-webpack-plugin": "^6.5.4",  // PWA for offline access
+    "crypto-js": "^4.1.1"  // Encryption for quantum-resistant data handling
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.45.0",
+    "typescript": "^5.1.0",  // For type safety in hyper-tech components
+    "prettier": "^3.0.0",  // Code formatting
+    "husky": "^8.0.0",  // Git hooks for CI
+    "lint-staged": "^13.2.0"  // Pre-commit linting
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "homepage": "https://pidefi.hypertech.io",  // Placeholder domain
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KOSASIH/chainlink/tree/main/PiDefi/frontend"
+  },
+  "keywords": [
+    "defi",
+    "stellar",
+    "soroban",
+    "pi-coin",
+    "holographic-ui",
+    "ai-chat",
+    "web3",
+    "hyper-tech"
+  ],
+  "author": "PiDefi Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KOSASIH/chainlink/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
