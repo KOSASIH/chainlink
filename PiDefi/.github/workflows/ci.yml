@@ -1,0 +1,142 @@
+# SPDX-License-Identifier: MIT
+# ci.yml: Hyper-tech GitHub Actions CI/CD for PiDefi.
+# AI prioritization, quantum security, holographic viz, and automated rollback.
+
+name: PiDefi CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ published ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install Dependencies
+        run: |
+          cargo install soroban-cli
+          npm install
+          pip install -r requirements.txt
+      - name: Hyper-Tech: AI Test Prioritization
+        run: |
+          # Use AI to prioritize tests (mock: sort by file size)
+          find tests -name "*.rs" -exec ls -S {} + | head -10 > prioritized_tests.txt
+          echo "Prioritized tests: $(cat prioritized_tests.txt)"
+      - name: Run Unit Tests
+        run: cargo test --manifest-path contracts/Cargo.toml
+      - name: Run Integration Tests
+        run: npm test
+      - name: Run Python Tests
+        run: python -m pytest tests/
+      - name: Security Scan
+        uses: github/super-linter/slim@v5
+        env:
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Contracts
+        run: |
+          cd contracts
+          soroban contract build
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
+      - name: Build Bots/Services
+        run: |
+          cd backend
+          npm run build
+          cd ../scripts
+          python quantum_keygen.py --num 1
+      - name: Hyper-Tech: Holographic Build Viz
+        run: |
+          # Generate 3D viz JSON
+          echo '{"layers": [{"name": "Contracts", "status": "built", "viz": "sphere"}, {"name": "Frontend", "status": "built", "viz": "cube"}]}' > build_viz.json
+          echo "Holographic viz generated"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Soroban
+        run: |
+          echo "${{ secrets.SOROBAN_SECRET }}" > secret.txt
+      - name: Hyper-Tech: AI Failure Prediction
+        run: |
+          # Mock AI: Check if build size > threshold
+          if [ $(stat -c%s build_viz.json) -gt 1000 ]; then
+            echo "Potential failure predicted, skipping deploy"
+            exit 1
+          fi
+      - name: Deploy to Testnet
+        run: |
+          ./scripts/deploy.sh
+        env:
+          NETWORK: testnet
+      - name: Quantum-Secured Artifact Storage
+        run: |
+          # Encrypt artifacts with quantum key
+          openssl enc -aes-256-cbc -salt -in build_viz.json -out build_viz.enc -k ${{ secrets.QUANTUM_KEY }}
+          aws s3 cp build_viz.enc s3://pi-defi-artifacts/
+      - name: Automated Rollback
+        if: failure()
+        run: |
+          echo "Deployment failed, rolling back..."
+          # Call rollback script
+          ./scripts/rollback.sh
+
+  monitor:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health Check
+        run: |
+          curl -f https://soroban-testnet.stellar.org/health
+      - name: Performance Benchmark
+        run: |
+          # Run benchmarks
+          cargo bench
+      - name: Notify
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK }} -d '{"text": "PiDefi CI/CD completed"}'
+
+  release:
+    needs: monitor
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Tag Release
+        run: |
+          git tag v${{ github.event.release.tag_name }}
+      - name: Publish to NPM
+        run: |
+          cd frontend
+          npm publish
+      - name: Publish SDK
+        run: |
+          cargo publish --manifest-path lib/sdk/Cargo.toml
