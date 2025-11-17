@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: MIT
+# stellar.toml: Hyper-tech TOML config for PiDefi on Stellar/Soroban.
+# Defines networks, AI, quantum, and holographic settings for deployment and runtime.
+
+[network]
+# Network settings
+testnet = "https://soroban-testnet.stellar.org"
+mainnet = "https://soroban-mainnet.stellar.org"
+current = "testnet"  # Switch via env var
+rpc_timeout = 30  # seconds
+max_retries = 5
+
+[contracts]
+# Deployed contract IDs (updated by deploy.sh)
+stable_coin = "CA..."  # PiSoroban.rs StableCoin
+price_oracle = "CB..."  # PriceOracle
+liquidity_pool = "CC..."  # LiquidityPool
+governance = "CD..."  # Governance
+defi_extensions = "CE..."  # DeFiExtensions.rs
+quantum_module = "CF..."  # QuantumSafeModule.rs
+cross_chain_bridge = "CG..."  # CrossChainBridge.rs
+price_feed_adapter = "CH..."  # PriceFeedAdapter.rs
+
+[oracles]
+# Chainlink oracle configs
+price_feed_id = "0x..."  # Chainlink feed for Pi Coin
+keeper_contract = "0x..."  # Automation keeper
+ccip_router = "0x..."  # Cross-chain router
+update_interval = 300  # seconds
+
+[ai]
+# AI hyperparameters for bots and services
+liquidity_model = { epochs = 50, learning_rate = 0.001, layers = [64, 32] }
+risk_model = { epochs = 50, threshold = 0.5, features = ["price", "volatility"] }
+yield_model = { epochs = 50, optimizer = "adam", loss = "mse" }
+anomaly_detection = { sensitivity = 0.8, window_size = 100 }
+
+[quantum]
+# Quantum-resistant crypto settings
+key_dir = "./quantum_keys"  # From quantum_keygen.py
+algorithm = "dilithium"  # Signature scheme
+encryption = "kyber"  # Key encapsulation
+key_size = 64  # bytes
+entropy_source = "hardware"  # or "software"
+
+[holographic]
+# Holographic visualization configs (for frontend/backend)
+enabled = true
+layers = [
+  { name = "Balance", viz = "sphere", coords = [0.0, 0.0, 0.0], color = "blue" },
+  { name = "Risk", viz = "cube", coords = [1.0, 1.0, 1.0], color = "red" },
+  { name = "Yield", viz = "cylinder", coords = [0.5, 0.5, 0.5], color = "green" }
+]
+resolution = 1080  # For rendering
+export_format = "json"  # or "png"
+
+[security]
+# Security settings
+jwt_secret = "hyper-tech-jwt-secret"  # Use env var in prod
+encrypted_keys = true
+audit_log = "./logs/audit.log"
+rate_limit = { requests = 100, window = 900 }  # per 15 min
+
+[ci_cd]
+# CI/CD overrides
+auto_deploy = false
+test_coverage = 80.0
+rollback_on_failure = true
+
+[logging]
+# Logging config
+level = "info"  # debug, info, warn, error
+file = "./logs/pidefi.log"
+max_size = "10MB"
+retention = 7  # days
+
+[custom]
+# Custom hyper-tech settings
+experimental_features = ["ai_predictions", "quantum_signing", "holographic_viz"]
+performance_mode = "optimized"  # or "balanced"
